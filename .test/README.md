@@ -12,7 +12,7 @@ Our current system is focused on the following.
 
   These are fired automatically on commit to GitHub, but can also be executed locally.  They run against a matrix of Terraform versions to make establish that versions of Terraform this module could support.
 
-- Locally initiated **Integration Tests** against the prototype account.
+- Locally initiated **Integration Tests**.
 
 ## Local Unit Tests
 
