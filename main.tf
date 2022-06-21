@@ -1,9 +1,3 @@
-### OVERVIEW BEGIN
-# Please preserve this section for easier merges from the
-# template repo.
-#
-# This file serves as a starting place for module code
-### OVERVIEW END
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 data "aws_partition" "current" {}

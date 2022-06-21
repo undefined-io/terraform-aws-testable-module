@@ -1,7 +1,11 @@
-resource "random_uuid" "sample" {}
+resource "random_string" "sample" {
+  special = false
+  upper   = false
+  length  = 4
+}
 
 locals {
-  id = random_uuid.sample.id
+  id = random_string.sample.id
   tags = {
     IsTerraformTest : "true"
   }
