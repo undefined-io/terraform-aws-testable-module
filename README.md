@@ -1,5 +1,5 @@
 # undefined-io/terraform-aws-testable-module
-[![tf-testable-module: tests](https://github.com/undefined-io/terraform-aws-testable-module/actions/workflows/module-test.yaml/badge.svg)](https://github.com/undefined-io/terraform-aws-testable-module/actions/workflows/module-test.yaml)  *(Note: if you are keeping this badge, please adjust the URL for your new repo)*
+[![unit-test](/actions/workflows/unit-test.yml/badge.svg)](/actions/workflows/unit-test.yml)
 
 Please replace this file as the main `README.md` for the actual implemented module.
 
