@@ -21,5 +21,5 @@ module "target" {
 }
 
 output "all" {
-  value = module.target
+  value = module.target.aws
 }
