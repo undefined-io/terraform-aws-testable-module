@@ -1,5 +1,5 @@
 # undefined-io/terraform-aws-testable-module
-[![unit-test](/actions/workflows/unit-test.yml/badge.svg)](/actions/workflows/unit-test.yml)
+[![unit-test](../../actions/workflows/unit-test.yml/badge.svg)](../../actions/workflows/unit-test.yml)
 
 Please replace this file as the main `README.md` for the actual implemented module.
 
