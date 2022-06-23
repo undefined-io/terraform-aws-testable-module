@@ -12,7 +12,7 @@ locals {
 }
 
 module "target" {
-  source = "../"
+  source = "../../"
 
   # Example tag block
   #tags = merge(local.tags, {
