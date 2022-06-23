@@ -7,7 +7,8 @@ resource "random_string" "sample" {
 locals {
   id = random_string.sample.id
   tags = {
-    IsTerraformTest : "true"
+    IsTerraformTest : "true",
+    Demo : "true",
   }
 }
 
