@@ -1,4 +1,4 @@
-name: 'tf-module: tests'
+name: 'unit-test'
 on:
   push:
     paths-ignore:
@@ -19,10 +19,8 @@ jobs:
       matrix:
         version:
           # Add/remove versions from this list based on what you plan
-          # to support for this module. New modules can probably start
-          # with just 1.x+. Older modules moving to this template might
-          # have to support additional versions.
-          - 1.0.11
+          # to support for this module.
+          - 1.1.9
     steps:
       - name: 'checkout'
         uses: actions/checkout@v2

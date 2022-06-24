@@ -49,9 +49,7 @@ act -C ../ -s TF_TESTABLE_MODULE_SSH_KEY
 
 ## Full Test
 
-***Note**: This uses local state and the prototype account only.*
-
-The test is a basic `terraform init/apply/destroy` that is only allowed to run in prototype and uses random resource names.
+The test is a basic `terraform init/apply/destroy` using local state.
 
 Paste credentials and run `make test`
 

@@ -8,7 +8,6 @@ locals {
   id = random_string.sample.id
   tags = {
     IsTerraformTest : "true",
-    Demo : "true",
   }
 }
 
