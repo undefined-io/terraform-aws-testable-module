@@ -16,7 +16,7 @@ terraform {
 provider "aws" {
   max_retries         = 2 # default is 25
   region              = "us-east-1"
-  allowed_account_ids = ["000000000000"] # sample account
+  allowed_account_ids = ["198604607953"] # sample account
 
   # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/default_tags
   # Common default tags
