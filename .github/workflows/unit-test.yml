@@ -6,8 +6,6 @@ on:
       # to trigger this action.  Feel free to adjust if some markdown would actually
       # affect how this modules behaves.
       - '*.md'
-      - '*.sh'
-      - '*.bash'
 jobs:
   execute:
     name: 'validate'
