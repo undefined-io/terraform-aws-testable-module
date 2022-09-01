@@ -12,50 +12,54 @@ main:
 	@echo "action    : Simulate github action locally"
 	@echo "aws-creds : Check if AWS access is valid"
 	@echo "clean     : Cleanup any temp files"
-	@echo "setup     : Runs two applies of the terraform in AWS"
-	@echo "teardown  : Destroy the apply in AWS"
-	@echo "full-test : Run setup and teardown"
+	@echo "plan      : Plan after unit-test"
+	@echo "apply     : Apply after unit-test"
+	@echo "destroy   : Destroy all resources"
+	@echo "full-test : Applies and destroys all resources"
 	@echo "unit-test : Purely local full syntax validation"
-	@false
+	@true
 
 clean:
 	rm -f .terraform.lock.hcl
 	rm -rf ./.terraform
 
+plan: clean
+	@terraform version \
+		&& cd "examples/simple-usage" \
+		&& terraform fmt --check \
+		&& terraform init \
+		&& terraform validate \
+		&& terraform plan
+
 unit-test: clean
-	@terraform version
-	@cd "examples/simple-usage"
-	@terraform fmt --check \
+	@terraform version \
+		&& cd "examples/simple-usage" \
+		&& terraform fmt --check \
 		&& terraform init \
 		&& terraform validate
-		@#&& terraform validate -json \
-		#| jq --unbuffered -rc \
-		#'.diagnostics[] | {severity: .severity, detail: .detail, filename: .range.filename, start_line: .range.start.line}'
 
 full-test: clean unit-test
 	# why 2 times?  this is to make sure the module doesn't have
 	# any unexpected changes the second time around.
-	@cd "examples/simple-usage"
-	@(terraform apply -auto-approve \
+	@cd "examples/simple-usage" \
+		&& (terraform apply -auto-approve \
 			&& terraform apply -auto-approve) \
-			|| true
-	terraform destroy -auto-approve
+		|| true \
+		;	terraform destroy -auto-approve
 
 aws-creds:
-	aws sts get-caller-identity
+	aws --no-cli-pager sts get-caller-identity
 
-setup: aws-creds unit-test
-	@cd "examples/simple-usage"
-	@terraform apply -auto-approve
-	@#terraform apply -auto-approve -json | jq --unbuffered -rc .
+apply: aws-creds unit-test
+	@cd "examples/simple-usage" \
+		&& terraform apply -auto-approve
 
-teardown: aws-creds
-	@cd "examples/simple-usage"
-	@terraform destroy -auto-approve
-	@#terraform destroy -auto-approve -json | jq --unbuffered -rc .
+destroy: aws-creds
+	@cd "examples/simple-usage" \
+		&& terraform destroy -auto-approve
 
 action:
 	@act -s TF_TESTABLE_MODULE_SSH_KEY -C . \
 		|| echo -e "\n:: NOTE: If act failed due to private repo issues, TF_TESTABLE_MODULE_SSH_KEY needs to be set per README."
 
-.PHONY: main full-test setup teardown unit-test clean action aws-creds
+.PHONY: main full-test apply destroy unit-test clean aws-creds plan action
