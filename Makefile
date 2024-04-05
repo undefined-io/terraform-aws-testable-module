@@ -21,11 +21,9 @@ main:
 	@true
 
 clean:
-	rm -f .terraform.lock.hcl
-	rm -rf ./.terraform
+	find . -name '.terraform*' -exec echo rm -rf {} +
 
 #
-# - At GLG we don't use HTTP web proxies for normal web requests.
 # - "iamlive" has a proxy mode uses web proxies with the AWS SDK
 # The reason why HTTP(S)_PROXY for init is set to '' is so that iamlive
 #   can have a proxy running and potentially in env vars, and

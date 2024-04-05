@@ -11,17 +11,20 @@ A template repository for Terraform (TF) modules where AWS is the primary provid
 
 ### Things you must do:
 
-- :page_with_curl: [Create a new repository](https://github.com/new?owner=glg&template_name=terraform-aws-testable-module&template_owner=glg) from the template repository.
+- :page_with_curl: [Create a new repository](https://github.com/new?template_name=terraform-aws-testable-module&template_owner=undefined-io) from the template repository.
 
 - :mag: Add `terraform` and `module` as topics in the "About" section of the repository
 
-  > *This conforms with the GLG standard, and makes the module easily discoverable in GitHub.*
+  > *This makes the module easily discoverable in GitHub.*
 
 - :heavy_exclamation_mark: Review all the default choices in the the `version.tf` file and adjust them as needed.
 
   > *The `version.tf` file directly impacts the tests in the `examples/` directory, and changes might be needed there before all the tests will pass.*
 
 - :bookmark_tabs: Create a `/README.md` file in the root directory of the repository.
+
+  - Add the `<!-- BEGIN_TF_DOCS -->` and `<!-- END_TF_DOCS -->` tags to the README if you would like to take advantage of the automatic docs generation.
+
 
   > *By default, the README is sourced from `/docs/README.md` but the root `README.md` (which should be specific to your module) will automatically become the repo default README once you create it.*
 
@@ -134,7 +137,7 @@ make docs
 (*Optional*) If you set this up right after creating your template repo, it makes updates to the latest version of the template easier later.
 
 ```bash
-git remote add template git@github.com:glg/terraform-aws-testable-module.git
+git remote add template git@github.com:undefined-io/terraform-aws-testable-module.git
 ```
 
 #### Updating the template

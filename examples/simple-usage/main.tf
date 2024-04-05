@@ -10,9 +10,9 @@ locals {
     # Use any tags that are applicable and not already covered by default_tags
     Owner          = "Test"
     App            = "TestApp"
-Project = "TestProject"
+    Project        = "TestProject"
     Ticket         = "https://github.com/sample-org-00/issues/xxx" # Optional
-    FollowUpDate       = "1970-01-01"                                  # Optional
+    FollowUpDate   = "1970-01-01"                                  # Optional
     FollowUpReason = "https://github.com/sample-org-00/issues/xxx" # Optional
   }
 }
@@ -24,7 +24,7 @@ module "target" {
   # - Providers don't have to be named primary or secondary, any name that makes
   #   sense works here.
   providers = {
-    aws.primary = aws
+    aws.primary = aws.test_use1
   }
 
   name = "test-${local.id}"
