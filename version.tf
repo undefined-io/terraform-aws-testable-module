@@ -6,7 +6,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 4.27"
+      version = ">= 4.0"
 
       # The template recommendation is to write your module with a provider
       #   that is supplied when the module is instantiated, vs using the

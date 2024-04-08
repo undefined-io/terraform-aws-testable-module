@@ -6,6 +6,11 @@ on:
       # to trigger this action.  Feel free to adjust if some markdown would actually
       # affect how this modules behaves.
       - '*.md'
+  workflow_dispatch:
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }} @ deploy'
+  cancel-in-progress: true
 jobs:
   execute:
     name: 'validate'
@@ -18,10 +23,10 @@ jobs:
         version:
           # Add/remove versions from this list based on what you plan
           # to support for this module.
-          - 1.1.9
+          - 1.5.7
     steps:
       - name: 'checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: 'install dependencies'
         run: |
           ARCHITECTURE="$(dpkg --print-architecture)"

@@ -1,0 +1,41 @@
+# https://terraform-docs.io/user-guide/configuration/
+formatter: "" # this is required
+
+version: ""
+
+recursive:
+  enabled: false
+  path: modules
+
+sections:
+  hide:
+    - data-sources
+
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+
+    {{ .Content }}
+
+    <!-- END_TF_DOCS -->
+
+sort:
+  enabled: true
+  by: name
+
+settings:
+  anchor: false
+  color: true
+  default: true
+  description: false
+  escape: true
+  hide-empty: true
+  html: false
+  indent: 2
+  lockfile: false
+  read-comments: true
+  required: true
+  sensitive: true
+  type: true

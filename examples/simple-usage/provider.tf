@@ -1,30 +1,39 @@
-
 terraform {
   required_version = ">= 1.0.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "= 4.27.0"
+      version = "~> 5.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = ">= 3.1"
+      version = "~> 3.0"
     }
   }
 }
 
+locals {
+  default_tags = {
+    "ManagedBy"   = "Terraform"
+    "Environment" = "UnitTest"
+  }
+}
+
 provider "aws" {
+  max_retries = 2
+  region      = "invalid"
+  access_key  = "invalid"
+  secret_key  = "invalid"
+}
+
+provider "aws" {
+  alias               = "test_use1"
   max_retries         = 2 # default is 25
   region              = "us-east-1"
   allowed_account_ids = ["198604607953"] # sample account
 
-  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/default_tags
-  # Common default tags
   default_tags {
-    tags = {
-      "ManagedBy"   = "Terraform"
-      "Environment" = "Test"
-    }
+    tags = local.default_tags
   }
 
   # Use this if your workflow supports roles
