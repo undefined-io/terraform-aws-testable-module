@@ -83,7 +83,7 @@ docs:
 		--rm \
 		-u $(id -u):$(id -g) \
 		--volume "$(CURDIR):/terraform-docs" \
-		quay.io/terraform-docs/terraform-docs:0.17.0 \
+		quay.io/terraform-docs/terraform-docs:0.20.0 \
 		markdown terraform-docs \
 		--config /terraform-docs/.config/terraform-docs.yml
 
