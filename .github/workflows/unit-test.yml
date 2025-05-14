@@ -18,28 +18,10 @@ jobs:
     defaults:
       run:
         shell: bash
-    strategy:
-      matrix:
-        version:
-          # Add/remove versions from this list based on what you plan
-          # to support for this module.
-          - 1.5.7
     steps:
       - name: 'checkout'
         uses: actions/checkout@v3
-      - name: 'install dependencies'
-        run: |
-          ARCHITECTURE="$(dpkg --print-architecture)"
-          cd /tmp
-          wget \
-            --quiet \
-            "$(printf '%s' \
-            "https://releases.hashicorp.com/terraform" \
-            "/${{matrix.version}}/terraform_${{matrix.version}}_linux_${ARCHITECTURE}.zip" \
-            )"
-          unzip terraform_*.zip
-          sudo mv "terraform" "/usr/local/bin/terraform"
-          terraform version
+      - uses: opentofu/setup-opentofu@v1
       - name: 'validate'
         run: |
           # The SSH key is not required to be in the repo and will only make a difference
