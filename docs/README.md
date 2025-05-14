@@ -163,3 +163,14 @@ Historically, we've had more problems with modules that had a specific upper bou
 ### Terraform Version
 
 Setting a proper lower bound, to make sure the module is safe and can function at all is essential.  In terms up upper bounds, support as many versions as possible here, so the module can actually get good use.  It's really up to the consumer to define these constraints more than the module.  To cover different versions of Terraform, matrix in the provided GitHub action will help you.
+
+## Notes
+
+```bash
+curl -L -o template.tar.gz 'https://github.com/undefined-io/terraform-aws-testable-module/archive/refs/heads/main.tar.gz'
+tar -xvzf template.tar.gz --strip-components=1 -C .
+rm CHANGELOG.md
+rm template.tar.gz
+rm -rf docs/
+rm -rf .github/
+```
