@@ -78,7 +78,7 @@ Our current system is focused on the following.
   These use the *currently installed version* of OpenTofu/Terraform, and do a basic sanity check on the module to make sure it would run at all.
 - Automated **Unit Tests** via GitHub actions.
 
-  These are fired automatically on commit to GitHub, but can also be executed locally. They run against a matrix of OpenTofu versions (currently 1.7 and 1.8) to establish which versions this module supports.
+  These are fired automatically on commit to GitHub, but can also be executed locally. They run against a matrix of OpenTofu versions (currently 1.9 and 1.10) to establish which versions this module supports.
 - Locally initiated **Integration Tests**.
 
 ## 1. Local Unit Tests
@@ -100,7 +100,7 @@ make unit-test
 ## 2. Local Automated Unit Tests
 
 - Run the Unit Tests via the GitHub action locally
-- Tests with the same OpenTofu version matrix as CI (1.7 and 1.8)
+- Tests with the same OpenTofu version matrix as CI (1.9 and 1.10)
 
 ### Requirements
 
