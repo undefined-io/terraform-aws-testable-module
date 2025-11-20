@@ -286,20 +286,52 @@ examples/sub-module-usage/
 └── modules/
     └── app/
         ├── main.tf         # Uses testable-module
-        └── variables.tf    # App-specific variables
+        ├── variables.tf    # App-specific variables
+        └── version.tf      # Declares provider requirements
+```
+
+**Provider Pass-Through Pattern**:
+
+**File**: `examples/sub-module-usage/main.tf:12-22`
+```hcl
+module "app" {
+  source = "./modules/app"
+
+  # Pass the AWS provider to the app sub-module
+  # The app module will pass it through to the testable-module
+  providers = {
+    aws = aws
+  }
+
+  name_prefix = "test-${local.id}"
+}
+```
+
+**File**: `examples/sub-module-usage/modules/app/version.tf`
+```hcl
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.0"
+      # This sub-module accepts an AWS provider from the calling module
+      # and passes it through to the testable-module
+      configuration_aliases = [aws]
+    }
+  }
+}
 ```
 
 **File**: `examples/sub-module-usage/modules/app/main.tf`
 ```hcl
-# This sub-module uses the testable-module template
-# This demonstrates the common pattern of:
-# root module -> app sub-module -> testable-module
-
 module "testable" {
   source = "../../../../"
 
-  # The module uses the default AWS provider, which is passed through
-  # from the root module automatically
+  # Pass the AWS provider through from the root module
+  # This is required because the module uses configuration_aliases = [aws]
+  providers = {
+    aws = aws
+  }
 
   name = "${var.name_prefix}-app"
   tags = {
@@ -309,21 +341,41 @@ module "testable" {
 }
 ```
 
-**Documentation**: `docs/README.md:43-67`
-```markdown
-## Examples
-
-### `examples/sub-module-usage/`
-Demonstrates using this module as a sub-module within a larger module structure...
+**How Provider Pass-Through Works**:
+```
+Root Module (provider.tf)
+  ↓ defines: provider "aws" { region = "us-east-1" }
+  ↓
+Root Module (main.tf)
+  ↓ passes: providers = { aws = aws }
+  ↓
+App Sub-Module (version.tf)
+  ↓ declares: configuration_aliases = [aws]
+  ↓
+App Sub-Module (main.tf)
+  ↓ passes: providers = { aws = aws }
+  ↓
+Testable Module (version.tf)
+  ↓ declares: configuration_aliases = [aws]
+  ↓
+Testable Module (main.tf)
+  ↓ uses: data sources with default provider
 ```
 
 **Benefits**:
-- ✅ Shows provider pass-through behavior
-- ✅ Demonstrates multi-layer architecture
+- ✅ Shows explicit provider pass-through pattern
+- ✅ Demonstrates multi-layer architecture with configuration_aliases
+- ✅ Each layer declares provider requirements clearly
 - ✅ Tested in unit-test target
 - ✅ Well-documented use case
 
-**Assessment**: Fills critical gap in template coverage.
+**Key Learning**:
+When using `configuration_aliases`, each module in the chain must:
+1. Declare `configuration_aliases = [aws]` in its `version.tf`
+2. Receive the provider via `providers = { aws = aws }` from its caller
+3. Pass the provider to any child modules that also use `configuration_aliases`
+
+**Assessment**: Excellent example of provider pass-through in multi-layer module architecture.
 
 ---
 
