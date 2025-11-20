@@ -84,22 +84,15 @@ terraform-aws-testable-module/
 
 ### Current State: ✅ Excellent - Flexible and intuitive
 
-**File**: `version.tf:11-24`
+**File**: `version.tf:11-17`
 ```hcl
-# The module uses the default AWS provider. If you need to use explicit
-# provider aliases (for multi-region or multi-account scenarios):
-# 1. Uncomment the configuration_aliases below
-# 2. Update all data sources in main.tf to specify the provider
-# 3. Consider adding an invalid default provider in your example to prevent
-#    accidental use of the wrong provider:
-#    provider "aws" {
-#      region     = "invalid"
-#      access_key = "invalid"
-#      secret_key = "invalid"
-#    }
-# configuration_aliases = [
-#   aws.primary,
-# ]
+# The module accepts an optional AWS provider configuration.
+# By default, it uses the provider from the calling module.
+# For multi-region or multi-account scenarios, you can:
+# 1. Add a named alias (e.g., aws.secondary) to the list below
+# 2. Update data sources in main.tf to specify which provider to use
+# 3. Pass providers explicitly when calling the module
+configuration_aliases = [aws]
 ```
 
 **File**: `main.tf:1-4`
@@ -127,11 +120,33 @@ module "target" {
 
 **Benefits**:
 - ✅ Zero boilerplate for common single-provider case
+- ✅ `configuration_aliases = [aws]` stays in place as documentation
+- ✅ Uses default provider from calling module automatically
+- ✅ Can be explicitly overridden when needed
+- ✅ No confusing "primary" naming
 - ✅ Clear upgrade path for multi-provider scenarios
-- ✅ Well-documented with step-by-step instructions
-- ✅ Shows best practice for preventing accidental default provider usage
 
-**Assessment**: Perfect balance between simplicity and flexibility.
+**How It Works**:
+```hcl
+# Simple case (no explicit provider needed):
+module "my_module" {
+  source = "..."
+  name   = "example"
+}
+# ✅ Uses default AWS provider automatically
+
+# Advanced case (explicit provider override):
+module "my_module" {
+  source = "..."
+  providers = {
+    aws = aws.us_west_2
+  }
+  name   = "example"
+}
+# ✅ Uses specified provider explicitly
+```
+
+**Assessment**: Perfect balance between simplicity and flexibility. The `configuration_aliases = [aws]` pattern keeps boilerplate in place while not requiring explicit provider passing.
 
 ---
 
