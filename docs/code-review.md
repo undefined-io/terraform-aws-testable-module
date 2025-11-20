@@ -103,13 +103,16 @@ data "aws_partition" "current" {}
 data "aws_organizations_organization" "primary" {}
 ```
 
-**File**: `examples/simple-usage/main.tf:20-31`
+**File**: `examples/simple-usage/main.tf:20-34`
 ```hcl
 module "target" {
   source = "../../"
 
-  # The module uses the default AWS provider configured in provider.tf
-  # For multi-provider scenarios, see version.tf for configuration_aliases setup
+  # Pass the default AWS provider from provider.tf
+  # This is required because the module uses configuration_aliases = [aws]
+  providers = {
+    aws = aws
+  }
 
   name = "test-${local.id}"
   tags = merge(local.tags, {
@@ -119,34 +122,37 @@ module "target" {
 ```
 
 **Benefits**:
-- ✅ Zero boilerplate for common single-provider case
+- ✅ Minimal boilerplate for common single-provider case
 - ✅ `configuration_aliases = [aws]` stays in place as documentation
-- ✅ Uses default provider from calling module automatically
-- ✅ Can be explicitly overridden when needed
+- ✅ Makes provider requirement explicit and clear
+- ✅ Can be easily overridden with different provider
 - ✅ No confusing "primary" naming
 - ✅ Clear upgrade path for multi-provider scenarios
 
 **How It Works**:
 ```hcl
-# Simple case (no explicit provider needed):
+# Simple case (pass default provider):
 module "my_module" {
   source = "..."
+  providers = {
+    aws = aws  # Pass default AWS provider
+  }
   name   = "example"
 }
-# ✅ Uses default AWS provider automatically
+# ✅ Uses default AWS provider from calling module
 
 # Advanced case (explicit provider override):
 module "my_module" {
   source = "..."
   providers = {
-    aws = aws.us_west_2
+    aws = aws.us_west_2  # Override with different region
   }
   name   = "example"
 }
 # ✅ Uses specified provider explicitly
 ```
 
-**Assessment**: Perfect balance between simplicity and flexibility. The `configuration_aliases = [aws]` pattern keeps boilerplate in place while not requiring explicit provider passing.
+**Assessment**: Good balance between explicitness and flexibility. The `configuration_aliases = [aws]` pattern requires minimal boilerplate (`providers = { aws = aws }`) while making the provider contract explicit and allowing easy overrides.
 
 ---
 
