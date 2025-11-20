@@ -26,7 +26,7 @@ A template repository for Terraform (TF) modules where AWS is the primary provid
   - Add the `<!-- BEGIN_TF_DOCS -->` and `<!-- END_TF_DOCS -->` tags to the README if you would like to take advantage of the automatic docs generation.
 
 
-  > *By default, the README is sourced from `/docs/README.md` but the root `README.md` (which should be specific to your module) will automatically become the repo default README once you create it.*
+  > *By default, the README is sourced from `/docs/README.md` (which contains template usage instructions). The root `README.md` is intentionally not included in the template so that when you later update from the template repository, your module-specific documentation won't be accidentally overwritten. Once you create the root `README.md`, it will automatically become the default README for your repository.*
 
 - :floppy_disk: Commit the initial changes to make sure the GitHub action succeeds in the new repository.
 
@@ -149,6 +149,8 @@ git merge --no-commit --allow-unrelated-histories template/main
 git add -A
 git commit
 ```
+
+> **Note:** The template intentionally excludes a root `/README.md` file to prevent accidentally overwriting your module's documentation when updating from the template. Your module-specific README.md will never be affected by template updates.
 
 ## Module Version Requirements
 

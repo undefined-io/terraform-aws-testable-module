@@ -18,12 +18,13 @@ variable "tags" {
 
 variable "required_list" {
   type        = list(string)
+  nullable    = false
   description = <<-DOC
   An example of a required list of strings.
   DOC
   validation {
-    condition     = length(var.required_list) >= 0
-    error_message = "The 'required_list' cannot be null."
+    condition     = var.required_list != null
+    error_message = "The 'required_list' is required and cannot be null."
   }
 }
 
