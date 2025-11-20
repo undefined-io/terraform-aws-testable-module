@@ -5,8 +5,11 @@
 module "testable" {
   source = "../../../../" # Points to the root of the template module
 
-  # The module uses the default AWS provider, which is passed through
-  # from the root module automatically
+  # Pass the AWS provider through from the root module
+  # This is required because the module uses configuration_aliases = [aws]
+  providers = {
+    aws = aws
+  }
 
   name = "${var.name_prefix}-app"
   tags = {

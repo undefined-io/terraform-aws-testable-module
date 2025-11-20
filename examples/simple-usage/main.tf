@@ -20,8 +20,11 @@ locals {
 module "target" {
   source = "../../"
 
-  # The module uses the default AWS provider configured in provider.tf
-  # For multi-provider scenarios, see version.tf for configuration_aliases setup
+  # Pass the default AWS provider from provider.tf
+  # This is required because the module uses configuration_aliases = [aws]
+  providers = {
+    aws = aws
+  }
 
   name = "test-${local.id}"
   # Module spefic tags, not convered by default_tags
