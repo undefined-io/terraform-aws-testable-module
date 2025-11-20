@@ -12,6 +12,12 @@ locals {
 module "app" {
   source = "./modules/app"
 
+  # Pass the AWS provider to the app sub-module
+  # The app module will pass it through to the testable-module
+  providers = {
+    aws = aws
+  }
+
   name_prefix = "test-${local.id}"
 }
 
