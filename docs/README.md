@@ -2,7 +2,7 @@
 
 # `terraform-aws-testable-module`
 
-A template repository for Terraform (TF) modules where AWS is the primary provider.
+A template repository for OpenTofu/Terraform modules where AWS is the primary provider.
 
 - Unit and integration tests
 - Documentation helpers
@@ -13,7 +13,7 @@ A template repository for Terraform (TF) modules where AWS is the primary provid
 
 - :page_with_curl: [Create a new repository](https://github.com/new?template_name=terraform-aws-testable-module&template_owner=undefined-io) from the template repository.
 
-- :mag: Add `terraform` and `module` as topics in the "About" section of the repository
+- :mag: Add `opentofu`, `terraform`, and `module` as topics in the "About" section of the repository
 
   > *This makes the module easily discoverable in GitHub.*
 
@@ -191,9 +191,9 @@ With modules, it's highly recommended not to set an upper bound for versions, as
 
 Historically, we've had more problems with modules that had a specific upper bound for no reason, than with modules that had no upper bounds.
 
-### Terraform Version
+### OpenTofu/Terraform Version
 
-Setting a proper lower bound, to make sure the module is safe and can function at all is essential.  In terms up upper bounds, support as many versions as possible here, so the module can actually get good use.  It's really up to the consumer to define these constraints more than the module.  To cover different versions of Terraform, matrix in the provided GitHub action will help you.
+Setting a proper lower bound, to make sure the module is safe and can function at all is essential.  In terms of upper bounds, support as many versions as possible here, so the module can actually get good use.  It's really up to the consumer to define these constraints more than the module.  To cover different versions of OpenTofu/Terraform, the version matrix in the provided GitHub action will help you.
 
 ## Notes
 

@@ -14,7 +14,7 @@ terraform {
 
 locals {
   default_tags = {
-    "ManagedBy"   = "Terraform"
+    "ManagedBy"   = "OpenTofu"
     "Environment" = "UnitTest"
   }
 }
