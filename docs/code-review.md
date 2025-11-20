@@ -180,6 +180,7 @@ module "my_module" {
 # Example: Optional list with validation
 # variable "allowed_principals" {
 #   type        = list(string)
+#   nullable    = false
 #   default     = []
 #   description = "List of AWS principals allowed to access the resource (no wildcards)"
 #   validation {
@@ -188,18 +189,30 @@ module "my_module" {
 #   }
 # }
 
-# ... additional examples for vpc_id, environment, cidr_blocks
+# Example: CIDR blocks with validation
+# variable "cidr_blocks" {
+#   type        = list(string)
+#   nullable    = false
+#   description = "CIDR blocks for network configuration"
+#   validation {
+#     condition     = alltrue([for cidr in var.cidr_blocks : can(cidrhost(cidr, 0))])
+#     error_message = "All CIDR blocks must be valid IPv4 CIDR notation."
+#   }
+# }
+
+# ... additional examples for vpc_id, environment
 ```
 
 **Improvements**:
 - ✅ All template variables commented out
 - ✅ Realistic, practical examples
-- ✅ Demonstrates `nullable = false` pattern
+- ✅ Demonstrates `nullable = false` pattern for **all list variables** (required and optional)
 - ✅ Shows various validation techniques:
   - Format validation (regex for VPC ID)
   - Value constraints (environment enum)
   - Security checks (wildcard prevention)
   - CIDR validation
+- ✅ Best practice: Even optional lists with defaults should use `nullable = false`
 
 **Assessment**: Excellent educational resource demonstrating Terraform best practices.
 

@@ -32,6 +32,7 @@ variable "tags" {
 # Example: Optional list with validation
 # variable "allowed_principals" {
 #   type        = list(string)
+#   nullable    = false
 #   default     = []
 #   description = "List of AWS principals allowed to access the resource (no wildcards)"
 #   validation {
@@ -63,6 +64,7 @@ variable "tags" {
 # Example: CIDR blocks with validation
 # variable "cidr_blocks" {
 #   type        = list(string)
+#   nullable    = false
 #   description = "CIDR blocks for network configuration"
 #   validation {
 #     condition     = alltrue([for cidr in var.cidr_blocks : can(cidrhost(cidr, 0))])
