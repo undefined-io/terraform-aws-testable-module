@@ -40,6 +40,33 @@ A template repository for Terraform (TF) modules where AWS is the primary provid
 
 ---
 
+## Examples
+
+The template includes example usage patterns to help you understand how to use and test your module:
+
+### `examples/simple-usage/`
+Basic standalone usage of the module. This is the primary example used for testing and demonstrates:
+- Direct module instantiation
+- Default AWS provider configuration
+- Basic variable usage
+
+### `examples/sub-module-usage/`
+Demonstrates using this module as a sub-module within a larger module structure. Shows the common pattern:
+```
+root-module/
+├── main.tf
+├── modules/
+│   └── app/
+│       └── main.tf  # Uses the testable-module
+```
+
+This pattern is useful when:
+- Building complex modules with multiple layers
+- Creating reusable sub-modules that depend on this module
+- Testing provider pass-through behavior
+
+---
+
 ## Testing Overview
 
 > *To better understand some of the terminology, please read over [this blog post](https://www.hashicorp.com/blog/testing-hashicorp-terraform) explaining some of the basic terraform test concepts, such as what a **unit test** is.*
@@ -48,20 +75,21 @@ Our current system is focused on the following.
 
 - Local **Unit Tests**
 
-  These use the *currently installed version* of Terraform, and do a basic sanity on the module to make sure it would run at all.
+  These use the *currently installed version* of OpenTofu/Terraform, and do a basic sanity check on the module to make sure it would run at all.
 - Automated **Unit Tests** via GitHub actions.
 
-  These are fired automatically on commit to GitHub, but can also be executed locally.  They run against a matrix of Terraform versions to make establish that versions of Terraform this module could support.
+  These are fired automatically on commit to GitHub, but can also be executed locally. They run against a matrix of OpenTofu versions (currently 1.7 and 1.8) to establish which versions this module supports.
 - Locally initiated **Integration Tests**.
 
 ## 1. Local Unit Tests
 
-- Uses locally installed `terraform` to validate `.tf` files.
-- DOES NOT create any resources
+- Uses locally installed `tofu` (OpenTofu) to validate `.tf` files
+- Tests both `examples/simple-usage` and `examples/sub-module-usage`
+- DOES NOT create any resources or make AWS API calls
 
 ### Requirements
 
-- Terraform
+- OpenTofu (or Terraform - change `tofu` to `terraform` in Makefile)
 
 ### Steps
 
@@ -71,11 +99,12 @@ make unit-test
 
 ## 2. Local Automated Unit Tests
 
-- Run the Unit Tests via the GitHub action locally.
+- Run the Unit Tests via the GitHub action locally
+- Tests with the same OpenTofu version matrix as CI (1.7 and 1.8)
 
 ### Requirements
 
-- Terraform
+- OpenTofu
 - [nektos/act](https://github.com/nektos/act)
 
 ### Steps
@@ -93,7 +122,7 @@ make action
 
 ### Full Test
 
-The test is a basic `terraform init/apply/destroy` using local state.
+The test is a basic `tofu init/apply/destroy` using local state.
 
 ```bash
 # provide environment variables for the AWS provider

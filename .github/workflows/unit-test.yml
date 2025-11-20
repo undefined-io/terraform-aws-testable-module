@@ -13,8 +13,11 @@ concurrency:
   cancel-in-progress: true
 jobs:
   execute:
-    name: 'validate'
+    name: 'validate-${{ matrix.tofu-version }}'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tofu-version: ['1.7', '1.8']
     defaults:
       run:
         shell: bash
@@ -22,6 +25,8 @@ jobs:
       - name: 'checkout'
         uses: actions/checkout@v3
       - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: ${{ matrix.tofu-version }}
       - name: 'validate'
         run: |
           # The SSH key is not required to be in the repo and will only make a difference

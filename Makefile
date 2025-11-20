@@ -49,6 +49,9 @@ unit-test: clean
 		&& tofu fmt --recursive \
 		&& cd "examples/simple-usage" \
 		&& HTTP_PROXY='' HTTPS_PROXY='' tofu init \
+		&& tofu validate \
+		&& cd "../sub-module-usage" \
+		&& HTTP_PROXY='' HTTPS_PROXY='' tofu init \
 		&& tofu validate
 
 full-test: clean unit-test
