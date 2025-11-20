@@ -28,8 +28,6 @@ module "target" {
   tags = merge(local.tags, {
     "Hello" = "World"
   })
-  required_list = []
-  #optional_list = ["if you un-comment this * you'll see the validation in effect"]
 }
 
 output "all" {

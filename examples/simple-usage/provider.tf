@@ -20,9 +20,14 @@ locals {
 }
 
 provider "aws" {
-  max_retries         = 2 # default is 25
-  region              = "us-east-1"
-  allowed_account_ids = ["198604607953"] # sample account
+  max_retries = 2 # default is 25
+  region      = "us-east-1"
+
+  # IMPORTANT: Change this to your actual AWS account ID(s) when using this module
+  # This example uses a placeholder account ID for unit testing purposes
+  # Since unit tests use validation only (no actual AWS API calls), this value
+  # isn't validated, but you MUST update it for real usage
+  allowed_account_ids = ["123456789012"] # CHANGE THIS to your AWS account ID
 
   default_tags {
     tags = local.default_tags
