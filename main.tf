@@ -1,7 +1,7 @@
-data "aws_region" "current" { provider = aws.primary }
-data "aws_caller_identity" "current" { provider = aws.primary }
-data "aws_partition" "current" { provider = aws.primary }
-data "aws_organizations_organization" "primary" { provider = aws.primary }
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
+data "aws_organizations_organization" "primary" {}
 locals {
   aws_primary = {
     region          = data.aws_region.current.name

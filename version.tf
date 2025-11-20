@@ -8,15 +8,12 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 4.0"
 
-      # The template recommendation is to write your module with a provider
-      #   that is supplied when the module is instantiated, vs using the
-      #   default provider.
-      # If you really need to use the default provider only, then please
-      #   the configuration_aliases below, and from anything in the examples/
-      #   directory.
-      configuration_aliases = [
-        aws.primary,
-      ]
+      # The module uses the default AWS provider. If you need to use explicit
+      # provider aliases (for multi-region or multi-account scenarios), you can
+      # uncomment the configuration_aliases below and update references in main.tf
+      # configuration_aliases = [
+      #   aws.primary,
+      # ]
     }
   }
 }

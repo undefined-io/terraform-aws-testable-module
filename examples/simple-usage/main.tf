@@ -20,12 +20,8 @@ locals {
 module "target" {
   source = "../../"
 
-  # - This is an example as to how you would work with multiple providers in a module
-  # - Providers don't have to be named primary or secondary, any name that makes
-  #   sense works here.
-  providers = {
-    aws.primary = aws.test_use1
-  }
+  # The module uses the default AWS provider configured in provider.tf
+  # For multi-provider scenarios, see version.tf for configuration_aliases setup
 
   name = "test-${local.id}"
   # Module spefic tags, not convered by default_tags

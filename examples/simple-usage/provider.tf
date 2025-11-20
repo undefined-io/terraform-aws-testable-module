@@ -20,14 +20,6 @@ locals {
 }
 
 provider "aws" {
-  max_retries = 2
-  region      = "invalid"
-  access_key  = "invalid"
-  secret_key  = "invalid"
-}
-
-provider "aws" {
-  alias               = "test_use1"
   max_retries         = 2 # default is 25
   region              = "us-east-1"
   allowed_account_ids = ["198604607953"] # sample account
