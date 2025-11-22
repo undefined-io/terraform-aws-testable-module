@@ -20,11 +20,10 @@ locals {
 module "target" {
   source = "../../"
 
-  # - This is an example as to how you would work with multiple providers in a module
-  # - Providers don't have to be named primary or secondary, any name that makes
-  #   sense works here.
+  # Pass the default AWS provider from provider.tf
+  # This is required because the module uses configuration_aliases = [aws]
   providers = {
-    aws.primary = aws.test_use1
+    aws = aws
   }
 
   name = "test-${local.id}"
@@ -32,8 +31,6 @@ module "target" {
   tags = merge(local.tags, {
     "Hello" = "World"
   })
-  required_list = []
-  #optional_list = ["if you un-comment this * you'll see the validation in effect"]
 }
 
 output "all" {

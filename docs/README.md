@@ -2,7 +2,7 @@
 
 # `terraform-aws-testable-module`
 
-A template repository for Terraform (TF) modules where AWS is the primary provider.
+A template repository for OpenTofu/Terraform modules where AWS is the primary provider.
 
 - Unit and integration tests
 - Documentation helpers
@@ -13,7 +13,7 @@ A template repository for Terraform (TF) modules where AWS is the primary provid
 
 - :page_with_curl: [Create a new repository](https://github.com/new?template_name=terraform-aws-testable-module&template_owner=undefined-io) from the template repository.
 
-- :mag: Add `terraform` and `module` as topics in the "About" section of the repository
+- :mag: Add `opentofu`, `terraform`, and `module` as topics in the "About" section of the repository
 
   > *This makes the module easily discoverable in GitHub.*
 
@@ -26,7 +26,7 @@ A template repository for Terraform (TF) modules where AWS is the primary provid
   - Add the `<!-- BEGIN_TF_DOCS -->` and `<!-- END_TF_DOCS -->` tags to the README if you would like to take advantage of the automatic docs generation.
 
 
-  > *By default, the README is sourced from `/docs/README.md` but the root `README.md` (which should be specific to your module) will automatically become the repo default README once you create it.*
+  > *By default, the README is sourced from `/docs/README.md` (which contains template usage instructions). The root `README.md` is intentionally not included in the template so that when you later update from the template repository, your module-specific documentation won't be accidentally overwritten. Once you create the root `README.md`, it will automatically become the default README for your repository.*
 
 - :floppy_disk: Commit the initial changes to make sure the GitHub action succeeds in the new repository.
 
@@ -40,6 +40,33 @@ A template repository for Terraform (TF) modules where AWS is the primary provid
 
 ---
 
+## Examples
+
+The template includes example usage patterns to help you understand how to use and test your module:
+
+### `examples/simple-usage/`
+Basic standalone usage of the module. This is the primary example used for testing and demonstrates:
+- Direct module instantiation
+- Default AWS provider configuration
+- Basic variable usage
+
+### `examples/sub-module-usage/`
+Demonstrates using this module as a sub-module within a larger module structure. Shows the common pattern:
+```
+root-module/
+├── main.tf
+├── modules/
+│   └── app/
+│       └── main.tf  # Uses the testable-module
+```
+
+This pattern is useful when:
+- Building complex modules with multiple layers
+- Creating reusable sub-modules that depend on this module
+- Testing provider pass-through behavior
+
+---
+
 ## Testing Overview
 
 > *To better understand some of the terminology, please read over [this blog post](https://www.hashicorp.com/blog/testing-hashicorp-terraform) explaining some of the basic terraform test concepts, such as what a **unit test** is.*
@@ -48,20 +75,21 @@ Our current system is focused on the following.
 
 - Local **Unit Tests**
 
-  These use the *currently installed version* of Terraform, and do a basic sanity on the module to make sure it would run at all.
+  These use the *currently installed version* of OpenTofu/Terraform, and do a basic sanity check on the module to make sure it would run at all.
 - Automated **Unit Tests** via GitHub actions.
 
-  These are fired automatically on commit to GitHub, but can also be executed locally.  They run against a matrix of Terraform versions to make establish that versions of Terraform this module could support.
+  These are fired automatically on commit to GitHub, but can also be executed locally. They run against a matrix of OpenTofu versions (currently 1.9 and 1.10) to establish which versions this module supports.
 - Locally initiated **Integration Tests**.
 
 ## 1. Local Unit Tests
 
-- Uses locally installed `terraform` to validate `.tf` files.
-- DOES NOT create any resources
+- Uses locally installed `tofu` (OpenTofu) to validate `.tf` files
+- Tests both `examples/simple-usage` and `examples/sub-module-usage`
+- DOES NOT create any resources or make AWS API calls
 
 ### Requirements
 
-- Terraform
+- OpenTofu (or Terraform - change `tofu` to `terraform` in Makefile)
 
 ### Steps
 
@@ -71,11 +99,12 @@ make unit-test
 
 ## 2. Local Automated Unit Tests
 
-- Run the Unit Tests via the GitHub action locally.
+- Run the Unit Tests via the GitHub action locally
+- Tests with the same OpenTofu version matrix as CI (1.9 and 1.10)
 
 ### Requirements
 
-- Terraform
+- OpenTofu
 - [nektos/act](https://github.com/nektos/act)
 
 ### Steps
@@ -93,7 +122,7 @@ make action
 
 ### Full Test
 
-The test is a basic `terraform init/apply/destroy` using local state.
+The test is a basic `tofu init/apply/destroy` using local state.
 
 ```bash
 # provide environment variables for the AWS provider
@@ -150,6 +179,8 @@ git add -A
 git commit
 ```
 
+> **Note:** The template intentionally excludes a root `/README.md` file to prevent accidentally overwriting your module's documentation when updating from the template. Your module-specific README.md will never be affected by template updates.
+
 ## Module Version Requirements
 
 This pertains to the **`version.tf`** file at the root of the module.  If you need guidance, reach out to the SRE team for advice.
@@ -160,9 +191,9 @@ With modules, it's highly recommended not to set an upper bound for versions, as
 
 Historically, we've had more problems with modules that had a specific upper bound for no reason, than with modules that had no upper bounds.
 
-### Terraform Version
+### OpenTofu/Terraform Version
 
-Setting a proper lower bound, to make sure the module is safe and can function at all is essential.  In terms up upper bounds, support as many versions as possible here, so the module can actually get good use.  It's really up to the consumer to define these constraints more than the module.  To cover different versions of Terraform, matrix in the provided GitHub action will help you.
+Setting a proper lower bound, to make sure the module is safe and can function at all is essential.  In terms of upper bounds, support as many versions as possible here, so the module can actually get good use.  It's really up to the consumer to define these constraints more than the module.  To cover different versions of OpenTofu/Terraform, the version matrix in the provided GitHub action will help you.
 
 ## Notes
 

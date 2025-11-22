@@ -4,6 +4,9 @@ SHELL := /usr/bin/env bash -euo pipefail -c
 .NOTPARALLEL:
 .EXPORT_ALL_VARIABLES:
 
+# This Makefile uses OpenTofu (tofu command).
+# OpenTofu is a fork of Terraform that maintains compatibility.
+# If you prefer Terraform, you can replace 'tofu' with 'terraform' throughout.
 AWS_RETRY_MODE=standard
 AWS_MAX_ATTEMPTS=1
 TF_IN_AUTOMATION=1
@@ -21,7 +24,9 @@ main:
 	@true
 
 clean:
-	find . -name '.terraform*' -exec echo rm -rf {} +
+	@find . -name '.terraform*' -exec rm -rf {} +
+	@find . -name 'terraform.tfstate*' -exec rm -rf {} +
+	@echo "Cleaned OpenTofu/Terraform artifacts"
 
 #
 # - "iamlive" has a proxy mode uses web proxies with the AWS SDK
@@ -49,16 +54,20 @@ unit-test: clean
 		&& tofu fmt --recursive \
 		&& cd "examples/simple-usage" \
 		&& HTTP_PROXY='' HTTPS_PROXY='' tofu init \
+		&& tofu validate \
+		&& cd "../sub-module-usage" \
+		&& HTTP_PROXY='' HTTPS_PROXY='' tofu init \
 		&& tofu validate
 
 full-test: clean unit-test
-	# why 2 times?  this is to make sure the module doesn't have
-	# any unexpected changes the second time around.
-	@cd "examples/simple-usage" \
-		&& (tofu apply -auto-approve \
-			&& tofu apply -auto-approve) \
-		|| true \
-		;	tofu destroy -auto-approve
+	# Why 2 times? This ensures the module doesn't have unexpected changes
+	# on the second apply (should show no changes).
+	# Uses trap to ensure destroy always runs, even if apply fails.
+	@cd "examples/simple-usage"; \
+		set -e; \
+		trap 'tofu destroy -auto-approve || true' EXIT; \
+		tofu apply -auto-approve; \
+		tofu apply -auto-approve
 
 aws-creds:
 	aws --no-cli-pager sts get-caller-identity
