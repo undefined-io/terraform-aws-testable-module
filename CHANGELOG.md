@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.0](https://github.com/undefined-io/terraform-aws-testable-module/compare/v2.0.0...v2.1.0) (2025-11-22)
+
+
+### Features
+
+* **template:** improve usability and testing with default provider pattern ([#15](https://github.com/undefined-io/terraform-aws-testable-module/issues/15)) ([fc1b131](https://github.com/undefined-io/terraform-aws-testable-module/commit/fc1b1319b5a61fa9940dba28356fa0c940b5e961))
+
+
+### Bug Fixes
+
+* **ci:** migrate to official release-please action ([#17](https://github.com/undefined-io/terraform-aws-testable-module/issues/17)) ([085f03c](https://github.com/undefined-io/terraform-aws-testable-module/commit/085f03c2b92be53ed13ba4b77d096309bfaef775))
+* **release-please:** correct GitHub Action reference ([#16](https://github.com/undefined-io/terraform-aws-testable-module/issues/16)) ([f75cac6](https://github.com/undefined-io/terraform-aws-testable-module/commit/f75cac6c95c05126f999075268f5e84df530574e))
+
 ## [2.0.0](https://github.com/undefined-io/terraform-aws-testable-module/compare/v1.1.0...v2.0.0) (2025-05-14)
 
 
